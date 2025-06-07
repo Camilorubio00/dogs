@@ -3,6 +3,7 @@ package com.example.dogs.di
 import com.example.dogs.core.CoroutinesDispatchers
 import com.example.dogs.data.BASE_URL
 import com.example.dogs.data.DogApi
+import com.example.dogs.exceptions.ApiExceptionHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +36,12 @@ object MainActivityModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(DogApi::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideApiExceptionHandler() : ApiExceptionHandler {
+        return ApiExceptionHandler()
     }
 
     @Provides

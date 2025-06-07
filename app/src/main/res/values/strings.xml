@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">dogs</string>
+    <string name="error_authentication">Authorization error. Sign in again.</string>
+    <string name="error_access_denied">Access denied. Try again later.</string>
+    <string name="error_connection_network">It seems that you do not have an internet connection</string>
+    <string name="error_unknown">Sorry, an error occurred, please try to log in later</string>
+    <string name="error_not_found">Sorry, this resource is not available</string>
+    <string name="error_unavailable_server">Server error</string>
 </resources>
