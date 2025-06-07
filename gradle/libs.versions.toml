@@ -14,6 +14,9 @@ kotlinxSerialization = "1.6.3"
 okhttp = "4.12.0"
 gson = "2.11.0"
 gsonConverter = "2.11.0"
+mockwebserver = "4.12.0"
+kotlinxCoroutines = "1.10.1"
+mockitoKotlin = "5.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +41,9 @@ gsonConverter = { group = "com.squareup.retrofit2", name = "converter-gson", ver
 kotlinx-serialization = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization"}
 squareup-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 squareup-okhttp-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
+kotlinxCoroutinesTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutines" }
+mockitoKotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

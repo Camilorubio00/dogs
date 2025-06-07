@@ -12,3 +12,9 @@ sealed class Result<out T : Any> {
         }
     }
 }
+
+fun <T : Any> Result<T>.error(message: String? = null) = (this as? Result.Error)?.exception ?: Exception(message ?: "unknown error")
+
+fun <T : Any> Result<T>.error(exception: Exception) = (this as? Result.Error)?.exception ?: exception
+
+fun <T : Any> Result<T>.success() = (this as? Result.Success)?.data
