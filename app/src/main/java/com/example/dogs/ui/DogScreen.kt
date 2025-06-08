@@ -15,24 +15,28 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import coil3.compose.AsyncImage
 import com.example.dogs.R
+import com.example.dogs.exceptions.ApiRequestException
 import com.example.dogs.extensions.MaxLine1
 import com.example.dogs.extensions.MaxLine3
 import com.example.dogs.extensions.Space12
@@ -42,16 +46,23 @@ import com.example.dogs.extensions.Space180
 import com.example.dogs.extensions.Space200
 import com.example.dogs.extensions.Space24
 import com.example.dogs.extensions.Space8
+import com.example.dogs.extensions.getString
 import com.example.dogs.ui.composable.CircularProgressIndicatorFixMax
+import com.example.dogs.ui.composable.LaunchSnackBar
+import com.example.dogs.ui.composable.SnackBarError
 import com.example.dogs.ui.model.DogUi
 import com.example.dogs.ui.model.DogUiModelState
 import com.example.dogs.ui.theme.BackgroundGrayColor
 
 @Composable
 fun DogScreen(dogUiModelState: DogUiModelState, onBackClick: () -> Unit) {
-    Scaffold(modifier = Modifier.background(BackgroundGrayColor), topBar = { DogTopAppBar(onBackClick) }) {
+    val snackBarHostState = remember { SnackbarHostState() }
+    Scaffold(modifier = Modifier.background(BackgroundGrayColor),
+        topBar = { DogTopAppBar(onBackClick) },
+        snackbarHost = { SnackBarError(snackBarHostState = snackBarHostState) }) {
         DogsUiState(
             dogUiModelState = dogUiModelState,
+            snackBarHostState = snackBarHostState,
             paddingValues = it
         )
     }
@@ -59,12 +70,12 @@ fun DogScreen(dogUiModelState: DogUiModelState, onBackClick: () -> Unit) {
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun DogTopAppBar(onBackClick: () -> Unit) {
+private fun DogTopAppBar(onBackClick: () -> Unit) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.back_button)
                 )
             }
@@ -86,6 +97,7 @@ fun DogTopAppBar(onBackClick: () -> Unit) {
 @Composable
 private fun DogsUiState(
     dogUiModelState: DogUiModelState,
+    snackBarHostState: SnackbarHostState,
     paddingValues: PaddingValues
 ) {
     when (dogUiModelState) {
@@ -96,12 +108,26 @@ private fun DogsUiState(
             dogs = dogUiModelState.dogs
         )
 
-        is DogUiModelState.Error -> Unit
+        is DogUiModelState.Error -> HandleException(dogUiModelState.error, snackBarHostState)
     }
 }
 
 @Composable
-fun DogsContent(modifier: Modifier = Modifier, dogs: List<DogUi>) {
+private fun HandleException(
+    throwable: Throwable,
+    snackBarHostState: SnackbarHostState
+) {
+    val apiError = throwable as? ApiRequestException
+    apiError?.let {
+        LaunchSnackBar(
+            snackBarHostState = snackBarHostState,
+            it.messageError.getString(LocalContext.current)
+        )
+    }
+}
+
+@Composable
+private fun DogsContent(modifier: Modifier = Modifier, dogs: List<DogUi>) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -114,7 +140,7 @@ fun DogsContent(modifier: Modifier = Modifier, dogs: List<DogUi>) {
 }
 
 @Composable
-fun DogsItem(dog: DogUi) = dog.run {
+private fun DogsItem(dog: DogUi) = dog.run {
     Row(modifier = Modifier.padding(vertical = Space8)) {
         AsyncImage(
             model = image,
@@ -147,7 +173,7 @@ fun DogsItem(dog: DogUi) = dog.run {
                 text = description,
                 maxLines = MaxLine3,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.padding(top = Space8)
             )
             Spacer(modifier = Modifier.height(Space12))

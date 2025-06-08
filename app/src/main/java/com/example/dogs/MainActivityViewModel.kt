@@ -33,13 +33,15 @@ class MainActivityViewModel @Inject constructor(
             withContext(coroutinesDispatchers.main) {
                 when (result) {
                     is Result.Success -> emitDogsUiStateSuccess(result.data)
-                    is Result.Error -> Unit
+                    is Result.Error -> emitDogsUiStateError(result.exception)
                 }
             }
         }
     }
 
     private fun emitDogsUiStateSuccess(dogs: List<Dog>) = emitDogsUiState(DogUiModelState.Success(dogs.toDogUiList()))
+
+    private fun emitDogsUiStateError(throwable: Throwable) = emitDogsUiState(DogUiModelState.Error(throwable))
 
     private fun emitDogsUiState(dogUiModelState: DogUiModelState) {
         _dogsUiModelState.value = dogUiModelState

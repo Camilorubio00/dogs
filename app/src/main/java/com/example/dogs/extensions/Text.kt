@@ -1,6 +1,9 @@
 package com.example.dogs.extensions
 
+import android.content.Context
 import androidx.annotation.StringRes
+import com.example.dogs.extensions.Text.StringResource
+import com.example.dogs.extensions.Text.StringValue
 
 sealed class Text {
     data class StringValue(val text: String) : Text()
@@ -17,4 +20,10 @@ sealed class Text {
         }
     }
     companion object
+}
+
+@SuppressWarnings("SpreadOperator")
+fun Text.getString(context: Context) = when (this) {
+    is StringValue -> text
+    is StringResource -> context.getString(resId, *arguments)
 }

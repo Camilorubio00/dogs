@@ -28,7 +28,7 @@ val Typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
-        color = TextColorGray,
+        color = TextColorWhite,
         fontSize = BodyMedium,
         lineHeight = LineHeight
     ),

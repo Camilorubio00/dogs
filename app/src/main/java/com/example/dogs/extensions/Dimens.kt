@@ -3,10 +3,10 @@ package com.example.dogs.extensions
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-val BodyMedium = 14.sp
 val LabelMedium = 14.sp
+val BodyMedium = 16.sp
 val BodyLarge = 16.sp
-val TitleLarge = 20.sp
+val TitleLarge = 22.sp
 val LineHeight = 24.sp
 
 val Space8 = 8.dp
