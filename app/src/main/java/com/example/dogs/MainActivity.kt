@@ -2,6 +2,7 @@ package com.example.dogs
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
 private fun InitContentWithUiState(mainActivityViewModel: MainActivityViewModel) {
     val dogsUiModelState by mainActivityViewModel.dogsUiModelState.collectAsState()
     dogsUiModelState?.run {
-        DogScreen(dogUiModelState = this)
+        val activity = LocalActivity.current as? ComponentActivity
+        DogScreen(dogUiModelState = this, onBackClick = { activity?.finish() })
     }
 }

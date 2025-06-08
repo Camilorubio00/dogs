@@ -59,6 +59,8 @@ dependencies {
     implementation(libs.squareup.okhttp)
     implementation(libs.squareup.okhttp.interceptor)
     implementation(libs.hilt.android)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network)
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.mockwebserver)

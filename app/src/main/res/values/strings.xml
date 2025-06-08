@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">dogs</string>
+    <string name="back_button">Back</string>">
+    <string name="app_bar_title">Dogs We Love</string>">
+    <string name="almost_years">Almost %1$d years</string>
     <string name="error_authentication">Authorization error. Sign in again.</string>
     <string name="error_access_denied">Access denied. Try again later.</string>
     <string name="error_connection_network">It seems that you do not have an internet connection</string>
