@@ -17,11 +17,11 @@ class DogRepository @Inject constructor(
         val localDogsFlow = dogLocalDataSource.fetchDogs()
         localDogsFlow.first().ifEmpty {
             when (val result = dogRemoteDataSource.fetchDogs()) {
-                is Result.Success -> {
-                    dogLocalDataSource.insertDogs(result.data)
-                    return@flow emit(result)
+                is Result.Success -> dogLocalDataSource.insertDogs(result.data)
+                is Result.Error -> {
+                    emit(result)
+                    return@flow
                 }
-                is Result.Error -> return@flow emit(result)
             }
         }
         emitAll(localDogsFlow.map { Result.Success(it) })

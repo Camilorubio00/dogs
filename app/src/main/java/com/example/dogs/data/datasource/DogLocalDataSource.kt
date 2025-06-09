@@ -8,5 +8,5 @@ import javax.inject.Inject
 
 class DogLocalDataSource @Inject constructor(private val dogDao: DogDao) {
     fun fetchDogs() = dogDao.fetchDogs().map { it.toDogList() }
-    fun insertDogs(dogs: List<Dog>) = dogDao.insertDogs(dogs.toDogEntityList())
+    suspend fun insertDogs(dogs: List<Dog>) = dogDao.insertDogs(dogs.toDogEntityList())
 }

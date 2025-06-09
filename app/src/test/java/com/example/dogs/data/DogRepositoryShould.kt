@@ -10,6 +10,7 @@ import com.example.dogs.extensions.Result
 import com.example.dogs.extensions.error
 import com.example.dogs.extensions.success
 import com.example.dogs.fakedata.givenDogs
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.runBlocking
@@ -45,7 +46,12 @@ class DogRepositoryShould {
     @Test
     fun `Get Dogs from remote when fetchDogs is called`(): Unit = runBlocking {
         val dogs = givenDogs()
-        whenever(dogLocalDataSource.fetchDogs()).thenReturn(flowOf(emptyList()))
+        whenever(dogLocalDataSource.fetchDogs()).thenReturn(
+            flow {
+                emit(emptyList())
+                emit(dogs)
+            }
+        )
         whenever(dogRemoteDataSource.fetchDogs()).thenReturn(Result.Success(dogs))
 
         val result = dogRepository.fetchDogs().lastOrNull()?.success()

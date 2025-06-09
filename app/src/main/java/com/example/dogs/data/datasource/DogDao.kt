@@ -14,5 +14,5 @@ interface DogDao {
     fun fetchDogs(): Flow<List<DogEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertDogs(dogs: List<DogEntity>)
+    suspend fun insertDogs(dogs: List<DogEntity>)
 }
