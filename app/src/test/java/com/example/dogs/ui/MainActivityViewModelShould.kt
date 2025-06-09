@@ -7,7 +7,7 @@ import com.example.dogs.assertThatEquals
 import com.example.dogs.assertThatIsInstanceOf
 import com.example.dogs.exceptions.ApiRequestException.ConnectionNetwork
 import com.example.dogs.extensions.Result
-import com.example.dogs.fakedata.givenDogs
+import com.example.dogs.fakedata.givenDogList
 import com.example.dogs.fakedata.givenDogUiList
 import com.example.dogs.ui.model.DogUiModelState
 import kotlinx.coroutines.flow.firstOrNull
@@ -36,7 +36,7 @@ class MainActivityViewModelShould {
 
     @Test
     fun `get dogUiList from DogUiModelState when fetchDogs is called and fetchDogsUseCase is success`() = runTest {
-        val dogList = givenDogs()
+        val dogList = givenDogList()
         val dogUiList = givenDogUiList()
         val resultSuccess = Result.Success(dogList)
 

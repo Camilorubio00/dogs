@@ -9,7 +9,7 @@ import com.example.dogs.exceptions.ApiExceptionHandler.Companion.AUTHENTICATION_
 import com.example.dogs.exceptions.ApiRequestException
 import com.example.dogs.extensions.error
 import com.example.dogs.extensions.success
-import com.example.dogs.fakedata.givenDogs
+import com.example.dogs.fakedata.givenDogList
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
@@ -45,12 +45,12 @@ class DogRemoteDataSourceShould {
 
     @Test
     fun `Get dog list when fetchDogs is called`() = runBlocking {
-        val dogs = givenDogs()
+        val dogList = givenDogList()
         mockWebServerRule.givenMockResponse(fileName = "endpoints-responses/fetch-dogs-response.json")
 
         val result = dogRemoteDataSource.fetchDogs().success()
 
-        assertThatEquals(result, dogs)
+        assertThatEquals(result, dogList)
     }
 
     @Test

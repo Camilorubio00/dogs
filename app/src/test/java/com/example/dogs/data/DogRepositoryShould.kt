@@ -9,7 +9,7 @@ import com.example.dogs.exceptions.ApiRequestException.ConnectionNetwork
 import com.example.dogs.extensions.Result
 import com.example.dogs.extensions.error
 import com.example.dogs.extensions.success
-import com.example.dogs.fakedata.givenDogs
+import com.example.dogs.fakedata.givenDogList
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.lastOrNull
@@ -34,32 +34,32 @@ class DogRepositoryShould {
 
     @Test
     fun `Get Dogs from local DB when fetchDogs is called`(): Unit = runBlocking {
-        val dogs = givenDogs()
-        whenever(dogLocalDataSource.fetchDogs()).thenReturn(flowOf(dogs))
+        val dogList = givenDogList()
+        whenever(dogLocalDataSource.fetchDogs()).thenReturn(flowOf(dogList))
 
         val result = dogRepository.fetchDogs().lastOrNull()?.success()
 
         verify(dogLocalDataSource).fetchDogs()
-        assertThatEquals(result, dogs)
+        assertThatEquals(result, dogList)
     }
 
     @Test
     fun `Get Dogs from remote when fetchDogs is called`(): Unit = runBlocking {
-        val dogs = givenDogs()
+        val dogList = givenDogList()
         whenever(dogLocalDataSource.fetchDogs()).thenReturn(
             flow {
                 emit(emptyList())
-                emit(dogs)
+                emit(dogList)
             }
         )
-        whenever(dogRemoteDataSource.fetchDogs()).thenReturn(Result.Success(dogs))
+        whenever(dogRemoteDataSource.fetchDogs()).thenReturn(Result.Success(dogList))
 
         val result = dogRepository.fetchDogs().lastOrNull()?.success()
 
         verify(dogLocalDataSource).fetchDogs()
-        verify(dogLocalDataSource).insertDogs(dogs)
+        verify(dogLocalDataSource).insertDogs(dogList)
         verify(dogRemoteDataSource).fetchDogs()
-        assertThatEquals(result, dogs)
+        assertThatEquals(result, dogList)
     }
 
     @Test

@@ -4,7 +4,7 @@ import com.example.dogs.assertThatEquals
 import com.example.dogs.data.repository.DogRepository
 import com.example.dogs.exceptions.ApiRequestException.ConnectionNetwork
 import com.example.dogs.extensions.Result
-import com.example.dogs.fakedata.givenDogs
+import com.example.dogs.fakedata.givenDogList
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.lastOrNull
 import kotlinx.coroutines.runBlocking
@@ -27,7 +27,7 @@ class FetchDogsUseCaseShould {
 
     @Test
     fun `Get Dogs when fetchDogs is called`(): Unit = runBlocking {
-        val resultSuccess = Result.Success(givenDogs())
+        val resultSuccess = Result.Success(givenDogList())
         whenever(dogRepository.fetchDogs()).thenReturn(flowOf(resultSuccess))
 
         val result = fetchDogsUseCase().lastOrNull()

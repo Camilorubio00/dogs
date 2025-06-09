@@ -8,7 +8,7 @@ private const val ANY_DESCRIPTION = "He is much more passive and is the first to
 private const val ANY_AGE = 5
 private const val ANY_IMAGE = "https://static.wikia.nocookie.net/isle-of-dogs/images/a/af/Rex.jpg/revision/latest/scale-to-width-down/666?cb=20180625001634"
 
-fun givenDogs() = listOf(givenDog())
+fun givenDogList() = listOf(givenDog())
 
 private fun givenDog() = Dog(
     dogName = ANY_DOG_NAME,
