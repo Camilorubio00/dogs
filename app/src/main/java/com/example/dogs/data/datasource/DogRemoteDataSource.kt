@@ -1,7 +1,7 @@
 package com.example.dogs.data.datasource
 
 import com.example.dogs.data.DogApi
-import com.example.dogs.data.model.toDogs
+import com.example.dogs.data.model.toDogList
 import com.example.dogs.exceptions.ApiExceptionHandler
 import com.example.dogs.extensions.Result.Success
 import com.example.dogs.extensions.Result.Error
@@ -13,8 +13,8 @@ class DogRemoteDataSource @Inject constructor(
 ) {
     suspend fun fetchDogs() = try {
         val result = dogApi.fetchDogs()
-        Success(result.toDogs())
-    } catch (e: Exception) {
-        Error(apiExceptionHandler.cause(e))
+        Success(result.toDogList())
+    } catch (exception: Exception) {
+        Error(apiExceptionHandler.cause(exception))
     }
 }

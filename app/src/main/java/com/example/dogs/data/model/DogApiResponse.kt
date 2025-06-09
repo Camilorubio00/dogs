@@ -10,7 +10,7 @@ data class DogDto(
     val image: String? = null
 )
 
-fun List<DogDto>.toDogs() = map { it.toDog() }
+fun List<DogDto>.toDogList() = map { it.toDog() }
 
 fun DogDto.toDog() = Dog(
     dogName = dogName.orEmpty(),

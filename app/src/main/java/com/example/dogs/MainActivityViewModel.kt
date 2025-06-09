@@ -11,8 +11,10 @@ import com.example.dogs.ui.model.toDogUiList
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,14 +30,15 @@ class MainActivityViewModel @Inject constructor(
 
     fun fetchDogs() {
         emitDogsUiState(DogUiModelState.Loading)
-        viewModelScope.launch(coroutinesDispatchers.io) {
-            val result = fetchDogsUseCase()
-            withContext(coroutinesDispatchers.main) {
-                when (result) {
-                    is Result.Success -> emitDogsUiStateSuccess(result.data)
-                    is Result.Error -> emitDogsUiStateError(result.exception)
-                }
-            }
+        viewModelScope.launch {
+            fetchDogsUseCase()
+                .flowOn(coroutinesDispatchers.io)
+                .onEach { result ->
+                    when (result) {
+                        is Result.Success -> emitDogsUiStateSuccess(result.data)
+                        is Result.Error -> emitDogsUiStateError(result.exception)
+                    }
+                }.launchIn(this)
         }
     }
 
